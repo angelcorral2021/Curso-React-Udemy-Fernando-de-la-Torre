@@ -1,24 +1,48 @@
 
 //Expression
 
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
+import Error from './Error'
 
-const Formulario = ({pacientes,setPacientes}) => {
+
+const Formulario = ({pacientes,setPacientes,paciente}) => {
 
   const [nombre, setNombre] = useState('');  //HOOKS no pueden ir por fuera , no en condicional ni en un return.
-  const [propieterio, setPropietario] = useState('');
+  const [propietario, setPropietario] = useState('');
   const [email, setEmail] = useState('');
   const [fecha, setFecha] = useState('');
   const [sintomas, setSintomas] = useState('');
 
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);//aQUI FORMULARIO ES PADRE DE ERROR
+
+
+
+useEffect (()=> {
+if(Object.keys(paciente).length > 0){
+  setNombre(paciente.nombre)
+}
+},[paciente])
+
+
+
+  const generarId = () => {
+
+const random = Math.random().toString(36).substring(2);
+const fecha = Date.now().toString(36);
+
+return fecha + random;
+
+  }
+
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     //validacion de usuario
 
-    if ([nombre, propieterio, email, fecha, sintomas].includes('')) {
+    if ([nombre, propietario, email, fecha, sintomas].includes('')) {
     console.log('Hay al menos un campo vacio')
 
     setError(true)
@@ -27,18 +51,21 @@ const Formulario = ({pacientes,setPacientes}) => {
 
 setError(false)
 
-//Objeto Pacientes
+//Objeto Paciente
 
-const objetoPaciente = {
+const objetoPaciente = {//En Javascript se puede crear un objeto de esta forma
   nombre, 
-  propieterio, 
+  propietario, 
   email, 
   fecha, 
-  sintomas
+  sintomas,
+  id: generarId()
 }
 
-setPacientes([...pacientes, objetoPaciente]);
+setPacientes([...pacientes, objetoPaciente]);//Funcion para ir agregando nuevos pacientes
 
+
+//Reinicio del formulario
 setEmail('')
 setFecha('')
 setNombre('')
@@ -57,19 +84,10 @@ setSintomas('')
         <span className="text-indigo-600 font-bold">Administralos</span>
       </p>
 
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg py-10 px-5 mb-10">
+      <form onSubmit={handleSubmit} 
+      className="bg-white shadow-md rounded-lg py-10 px-5 mb-10">
 
-{error &&
-<div className='bg-red-800 text-white text-center p-3 uppercase font-bold mb-3 rounded-md'>
-  <p>Todos los campos son obligatorios
-
-  </p>
-</div>
-
-
-
-
-}
+      {error && <Error>Todos los campos son obligatorios</Error>} 
 
 
 
@@ -87,7 +105,7 @@ setSintomas('')
         <div className="mb-5">
           <label htmlFor="propietario" className="block text-gray-700 uppercase font-bold">Nombre de Propietario</label>
           <input id="propietario" type="text" placeholder="Nombre del Propietario " className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-            value={propieterio}
+            value={propietario}
             onChange={(e) => setPropietario(e.target.value)} />
         </div>
 
