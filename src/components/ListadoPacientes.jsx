@@ -5,7 +5,7 @@ import Paciente from "./Paciente"
 
 
 
-const ListadoPacientes = ({ pacientes, setPaciente}) => {
+const ListadoPacientes = ({ pacientes, setPaciente, eliminarPaciente}) => {
 
 
 
@@ -19,7 +19,6 @@ const ListadoPacientes = ({ pacientes, setPaciente}) => {
 
 
   return (
-
 
 
     <div className="md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll">
@@ -40,6 +39,7 @@ const ListadoPacientes = ({ pacientes, setPaciente}) => {
                 key={paciente.id}//siempre se debe tener un key para iterar arreglo
                 paciente={paciente}//Props que se envia al componente Paciente
                 setPaciente={setPaciente}
+                eliminarPaciente = {eliminarPaciente}
               />
             ))}
           </div>
@@ -55,21 +55,7 @@ const ListadoPacientes = ({ pacientes, setPaciente}) => {
 
           </div>
 
-
-
         )}
-
-
-
-
-
-
-
-
-
-
-
-
 
     </div>
   )
